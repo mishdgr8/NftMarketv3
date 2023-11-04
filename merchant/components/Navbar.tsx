@@ -6,9 +6,17 @@ const Navbar = () => {
   const address = useAddress();
 
   return (
-    <Box maxW={"1200"} m={"auto"} py={"10px"} px={"40px"}>
+    <Box
+      maxW={"1200"}
+      m={"auto"}
+      mt={"4px"}
+      py={"4px"}
+      px={"20px"}
+      border={"1px solid"}
+      borderRadius={"full"}
+    >
       <Flex justifyContent={"space-between"} alignItems={"center"}>
-        <Link as={NextLink} href="/buy" mx={2.5}>
+        <Link as={NextLink} href="/" mx={2.5}>
           <Heading> MerChant</Heading>
         </Link>
         <Flex direction={"row"}>
