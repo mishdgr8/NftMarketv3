@@ -8,7 +8,7 @@ import {
   ThirdwebNftMedia,
   useContract,
   useValidDirectListings,
-  useEnglishAuction,
+  useValidEnglishAuctions,
 } from "@thirdweb-dev/react";
 import { Box, Flex, Skeleton, Text } from "@chakra-ui/react";
 
@@ -24,6 +24,12 @@ export default function NFTComponent({ nft }: Props) {
 
   const { data: directListing, isLoading: loadingDirectListing } =
     useValidDirectListings(marketplace, {
+      tokenContract: NFT_COLLECTION_ADDRESS,
+      tokenId: nft.metadata.id,
+    });
+
+  const { data: auctionListing, isLoading: loadingAuction } =
+    useValidEnglishAuctions(marketplace, {
       tokenContract: NFT_COLLECTION_ADDRESS,
       tokenId: nft.metadata.id,
     });
@@ -48,7 +54,7 @@ export default function NFTComponent({ nft }: Props) {
       <Text fontWeight={"bold"}>{nft.metadata.name}</Text>
 
       <Box>
-        {loadingMarketPlace || loadingDirectListing ? (
+        {loadingMarketPlace || loadingDirectListing || loadingAuction ? (
           <Skeleton></Skeleton>
         ) : directListing && directListing[0] ? (
           <Box>
@@ -58,6 +64,16 @@ export default function NFTComponent({ nft }: Props) {
                 fontSize={"small"}
               >{`${directListing[0]?.currencyValuePerToken.displayValue}
          ${directListing[0]?.currencyValuePerToken.symbol}`}</Text>
+            </Flex>
+          </Box>
+        ) : auctionListing && auctionListing[0] ? (
+          <Box>
+            <Flex direction={"column"}>
+              <Text fontSize={"small"}>Minimum Bid</Text>
+              <Text
+                fontSize={"small"}
+              >{`${auctionListing[0]?.minimumBidCurrencyValue.displayValue}
+         ${auctionListing[0]?.minimumBidCurrencyValue.symbol}`}</Text>
             </Flex>
           </Box>
         ) : (
